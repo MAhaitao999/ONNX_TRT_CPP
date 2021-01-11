@@ -6,7 +6,7 @@ import numpy as np
 import tensorrt as trt
 
 
-ONNX_FILE_PATH = "resnet50.onnx"
+ONNX_FILE_PATH = "../models/resnet50.onnx"
 
 # logger to capture errors, warnings, and other information during the build and inference phases
 TRT_LOGGER = trt.Logger()
@@ -39,7 +39,7 @@ def build_engine(onnx_file_path):
     print(engine)
     context = engine.create_execution_context()
     print(context)
-    engine_file_path = "resnet50.engine"
+    engine_file_path = "../models/resnet50.engine"
     with open(engine_file_path, "wb") as f:
         f.write(engine.serialize())
     print("Serialize engine success")
@@ -66,7 +66,7 @@ def main():
     stream = cuda.Stream()
 
     # preprocess input data
-    host_input = np.array(preprocess_image("car.jpg").numpy(), dtype=np.float32, order='C')
+    host_input = np.array(preprocess_image("../testimages/car.jpg").numpy(), dtype=np.float32, order='C')
     cuda.memcpy_htod_async(device_input, host_input, stream)
 
     # run inference
